@@ -1,0 +1,139 @@
+--[[
+    ART-STUDIOHUB UI SCRIPT
+]]--
+
+-- สร้าง ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local ProfileImage = Instance.new("ImageLabel")
+local ImageCorner = Instance.new("UICorner")
+local TitleLabel = Instance.new("TextLabel")
+local Container = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+
+-- ตั้งค่า ScreenGui
+ScreenGui.Name = "ART_STUDIOHUB_GUI"
+ScreenGui.Parent = game:GetService("CoreGui") or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+
+-- สร้างกรอบหลัก (Main Frame)
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 38)
+MainFrame.Position = UDim2.new(0.35, 0, 0.25, 0)
+MainFrame.Size = UDim2.new(0, 350, 0, 480)
+MainFrame.Active = true
+MainFrame.Draggable = true -- สามารถลากเคลื่อนย้ายหน้าต่างได้
+
+UICorner.CornerRadius = UDim.new(0, 12)
+UICorner.Parent = MainFrame
+
+-- โหลดรูปภาพประกอบ UI
+ProfileImage.Name = "ProfileImage"
+ProfileImage.Parent = MainFrame
+ProfileImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ProfileImage.Position = UDim2.new(0.05, 0, 0.03, 0)
+ProfileImage.Size = UDim2.new(0, 315, 0, 160)
+ProfileImage.Image = "rbxassetid://135122115160897" -- ไอดีรูปภาพตัวอย่าง (สามารถเปลี่ยน assetid ได้)
+ProfileImage.ScaleType = Enum.ScaleType.Crop
+
+ImageCorner.CornerRadius = UDim.new(0, 10)
+ImageCorner.Parent = ProfileImage
+
+-- ชื่อ Hub (ART-STUDIOHUB)
+TitleLabel.Name = "TitleLabel"
+TitleLabel.Parent = MainFrame
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Position = UDim2.new(0.05, 0, 0.38, 0)
+TitleLabel.Size = UDim2.new(0, 315, 0, 30)
+TitleLabel.Font = Enum.Font.GothamBold
+TitleLabel.Text = "ART-STUDIOHUB"
+TitleLabel.TextColor3 = Color3.fromRGB(255, 215, 0) -- สีทอง
+TitleLabel.TextSize = 22.000
+
+-- รายการเมนู (Scrolling Container)
+Container.Name = "Container"
+Container.Parent = MainFrame
+Container.Active = true
+Container.BackgroundTransparency = 1
+Container.Position = UDim2.new(0.05, 0, 0.46, 0)
+Container.Size = UDim2.new(0, 315, 0, 240)
+Container.ScrollBarThickness = 4
+
+UIListLayout.Parent = Container
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 8)
+
+-- ฟังก์ชันสร้างปุ่ม Toggle (เปิด/ปิด)
+local function CreateToggle(text, callback)
+    local ToggleButton = Instance.new("TextButton")
+    local ButtonCorner = Instance.new("UICorner")
+    local StatusLabel = Instance.new("TextLabel")
+    local enabled = false
+
+    ToggleButton.Name = text
+    ToggleButton.Parent = Container
+    ToggleButton.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
+    ToggleButton.Size = UDim2.new(1, -10, 0, 38)
+    ToggleButton.Font = Enum.Font.GothamMedium
+    ToggleButton.Text = "  " .. text
+    ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ToggleButton.TextSize = 14.000
+    ToggleButton.TextXAlignment = Enum.TextXAlignment.Left
+
+    ButtonCorner.CornerRadius = UDim.new(0, 8)
+    ButtonCorner.Parent = ToggleButton
+
+    StatusLabel.Name = "Status"
+    StatusLabel.Parent = ToggleButton
+    StatusLabel.BackgroundTransparency = 1
+    StatusLabel.Position = UDim2.new(0.7, 0, 0, 0)
+    StatusLabel.Size = UDim2.new(0.3, -10, 1, 0)
+    StatusLabel.Font = Enum.Font.GothamBold
+    StatusLabel.Text = "OFF"
+    StatusLabel.TextColor3 = Color3.fromRGB(255, 70, 70)
+    StatusLabel.TextSize = 13.000
+    StatusLabel.TextXAlignment = Enum.TextXAlignment.Right
+
+    ToggleButton.MouseButton1Click:Connect(function()
+        enabled = not enabled
+        if enabled then
+            StatusLabel.Text = "ON"
+            StatusLabel.TextColor3 = Color3.fromRGB(80, 255, 120)
+        else
+            StatusLabel.Text = "OFF"
+            StatusLabel.TextColor3 = Color3.fromRGB(255, 70, 70)
+        end
+        pcall(callback, enabled)
+    end)
+end
+
+-- ==========================================
+-- เพิ่มเมนูการทำงานตามที่ต้องการ
+-- ==========================================
+
+CreateToggle("ดึงคันโยก", function(state)
+    print("ออโต้ดึงคันโยก:", state)
+    -- ใส่โค้ดดึงคันโยกที่นี่
+end)
+
+CreateToggle("ออโต้เปิดเผ่าพร้อมกัน", function(state)
+    print("ออโต้เปิดเผ่าพร้อมกัน:", state)
+    -- ใส่โค้ดเปิดเผ่าที่นี่
+end)
+
+CreateToggle("ออโต้รีตัว", function(state)
+    print("ออโต้รีตัว:", state)
+    -- ใส่โค้ดรีตัวละครที่นี่
+end)
+
+CreateToggle("ออโต้แปลงร่างตามที่กำหนด", function(state)
+    print("ออโต้แปลงร่าง:", state)
+    -- ใส่โค้ดแปลงร่างที่นี่
+end)
+
+CreateToggle("ออโต้รับภารกิจ", function(state)
+    print("ออโต้รับภารกิจ:", state)
+    -- ใส่โค้ดรับภารกิจที่นี่
+end)
